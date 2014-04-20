@@ -1,7 +1,7 @@
 <a name="Blender Downloader"/>
 ## Blender Downloader
 
-A python script that downloads the newest version of [blender](http://www.blender.org/).
+A python script that downloads the newest version of [Blender](http://www.blender.org/).
 
 <a name="Instructions"/>
 ## Instructions
