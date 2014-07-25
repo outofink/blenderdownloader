@@ -1,7 +1,20 @@
-#!c:/Python27/python.exe -u
 from bs4 import BeautifulSoup as BS
-import urllib2, sys, getopt, zipfile
+import sys, getopt, zipfile
 from os import system, name, path, remove
+
+if sys.version_info.major == 3:
+	import urllib.request, urllib.error
+	urlopen   = urllib.request.urlopen
+	Request   = urllib.request.Request
+	HTTPError =	urllib.error.HTTPError
+	URLError  = urllib.error.URLError
+elif sys.version_info.major == 2:
+	import urllib2
+	urlopen   = urllib2.urlopen
+	Request   = urllib2.Request
+	HTTPError =	urllib2.HTTPError
+	URLError  = urllib2.URLError
+
 class BlenderDownloader():
 	def __init__(self, argv):
 		self.main(argv)
@@ -11,46 +24,46 @@ class BlenderDownloader():
 		grammar = ""
 		for opt, arg in opts:                
 			if opt in ("-h", "--help"):
-				print "You thought there was help!? Well, there will be, but not yet."                          
+				print("You thought there was help!? Well, there will be soon.")                          
 				sys.exit()                                    
 			elif opt in ("-v", "--version"):
 				grammar = arg
 		system('cls' if name == 'nt' else 'clear')
-		print "Blender Downloader v1.0"
-		print "Retrieving most recent Blender version..."
+		print("Blender Downloader v1.0")
+		print("Retrieving most recent Blender version...")
 		try:
-			blender_html = BS(urllib2.urlopen(urllib2.Request('http://www.blender.org')).read())
-		except urllib2.URLError:
-			print "\nERROR: Not connected to the internet."
+			blender_html = BS(urlopen(Request('http://www.blender.org')).read())
+		except URLError:
+			print("\nERROR: Not connected to the internet.")
 			sys.exit(1)
-		blenderCurVer = blender_html.find('div', attrs={'class':"btn btn-large"}).text.strip()
-		print "\nMost recent version is %s." % blenderCurVer
+		blenderCurVer = blender_html.find('button', attrs={'class':"btn btn-default btn-lg"}).text.strip()
+		print("\nMost recent version is %s." % blenderCurVer)
 		#blenderCurVerNum = float(blenderCurVer.replace("Blender ",""))
 		def genlink(version=blenderCurVer.replace("Blender ",""), platform="windows64"):
 			gversion=version.replace("a","").replace("b","")
 
 			final="http://download.blender.org/release/Blender{0}/blender-{2}-{1}.zip".format(gversion, platform, version)
 			try:
-				u = urllib2.urlopen(final)
-			except urllib2.HTTPError:
+				u = urlopen(final)
+			except HTTPError:
 				try:
 					final="http://download.blender.org/release/Blender{0}/blender-{2}-release-{1}.zip".format(gversion, platform, version)
-					u = urllib2.urlopen(final)
-				except urllib2.HTTPError:
-					print "ERROR: Blender version does not exist.\nNote: Blender Downloader only supports Blender 2.57+"
+					u = urlopen(final)
+				except HTTPError:
+					print("ERROR: Blender version does not exist.\nNote: Blender Downloader only supports Blender 2.57+")
 					return False
 				return final
 			return final	
 		def download(link):
 			file_name = link.split('/')[-1]
-			u = urllib2.urlopen(link)
+			u = urlopen(link)
 			f = open(file_name, 'wb')
 			meta = u.info()
-			file_size = int(meta.getheaders("Content-Length")[0])
+			file_size = int(meta["Content-Length"])
 			file_sizeMB=file_size/1024.0/1024.0
-			print "Downloading: {0} filesize: {1:.4}MB".format(file_name, file_sizeMB)
+			print("Downloading: {0} filesize: {1:.4}MB".format(file_name, file_sizeMB))
 			file_size_dl = 0
-			block_sz = 8192
+			block_sz = 1024
 			while True:
 			    buffer = u.read(block_sz)
 			    if not buffer:
@@ -61,14 +74,14 @@ class BlenderDownloader():
 			    status = r"{0:.2f}MB/{2:.2f}MB [{1:.2%}]       ".format(file_size_dl/1024.0/1024.0, p, file_sizeMB)
 			    status = status + chr(8)*(len(status)+1)
 			    sys.stdout.write(status)
-			print
+			print()
 			f.close()
 			return file_name
 		def extract(zipped="blender-2.70-windows64.zip"):
 			zip = zipfile.ZipFile(zipped)
 			nameList = zip.namelist()
 			fileCount = len(nameList)
-			print "\nExtracting: %s filecount: %s files" % (zipped, fileCount)
+			print("\nExtracting: %s filecount: %s files" % (zipped, fileCount))
 			count = 0
 			for item in nameList:
 				count += 1
@@ -77,7 +90,7 @@ class BlenderDownloader():
 				lolz = lolz + chr(8)*(len(lolz)+1)
 				sys.stdout.write(lolz) 
 				zip.extract(item,"")
-			print
+			print()
 			return True
 		if grammar:
 			linked=genlink(grammar)
@@ -85,16 +98,16 @@ class BlenderDownloader():
 			linked=genlink()
 		if linked:
 			if grammar:
-				print "Downloading Blender %s now...\n" % grammar
+				print("Downloading Blender %s now... (please wait a bit)\n" % grammar)
 			else:
-				print "Downloading most recent version now... (please wait a bit)\n"
+				print("Downloading most recent version now... (please wait a bit)\n")
 			blenderzip=download(linked)
-			print "\nExtracting blender package..."
+			print("\nExtracting blender package...")
 			#other stuff
 			extract(blenderzip)
-			print "\nCleaning up..."
+			print("\nCleaning up...")
 			remove(blenderzip)
-			print "\nDone!"
+			print("\nDone!")
 
 if __name__ == "__main__":
 	BlenderDownloader(sys.argv[1:])

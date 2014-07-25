@@ -5,7 +5,7 @@ A python script that downloads the newest version of [Blender](http://www.blende
 
 <a name="Instructions"/>
 ## Instructions
-Run `blenderdownloader.py` for Python 2.x and `blenderdownloader3.py` for Python 3.x.   
+Run `blenderdownloader.py` for both Python 2.x and Python 3.x.   
 Run with `-v` to specify version. (ie. `blenderdownloader.py -v 2.69` downloads Blender 2.69)
 
 ## Requirements
