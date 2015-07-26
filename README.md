@@ -9,8 +9,8 @@ Run `blenderdownloader.py` for both Python 2.x and Python 3.x.
 Run with `-v` to specify version. (ie. `blenderdownloader.py -v 2.69` downloads Blender 2.69)
 
 ## Requirements
-*   [Python](https://www.python.org/)
-*   [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
+* [Python](https://www.python.org/)
+* [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 
 <a name="Supports"/>
 ## Supports
