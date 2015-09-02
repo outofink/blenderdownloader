@@ -32,7 +32,7 @@ class BlenderDownloader():
 		print("Blender Downloader v1.0")
 		print("Retrieving most recent Blender version...")
 		try:
-			blender_html = BS(urlopen(Request('http://www.blender.org')).read())
+			blender_html = BS(urlopen(Request('http://www.blender.org')).read(), "html.parser")
 		except URLError:
 			print("\nERROR: Not connected to the internet.")
 			sys.exit(1)
