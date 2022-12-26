@@ -1,9 +1,7 @@
-<a name="Blender Downloader"/>
 ## Blender Downloader
 
 A python script that downloads the newest version of [Blender](http://www.blender.org/).
 
-<a name="Instructions"/>
 ## Instructions
 Run `blenderdownloader.py` for both Python 2.x and Python 3.x.   
 Run with `-v` to specify version. (ie. `blenderdownloader.py -v 2.69` downloads Blender 2.69)
@@ -12,7 +10,6 @@ Run with `-v` to specify version. (ie. `blenderdownloader.py -v 2.69` downloads 
 * [Python](https://www.python.org/)
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 
-<a name="Supports"/>
 ## Supports
 
 *   Blender 2.57+
